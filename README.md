@@ -24,3 +24,8 @@ For each video, the description and the first 50 comments are consumed.
 
 For each source a JSON file will be generated. Those JSON files are saved locally for development, and in an S3 bucket for productive deployment
 
+###
+
+Developing notes:
+
+- Node.js version 16.6.2
