@@ -1,3 +1,9 @@
 import scrapInfobae from "./sources/infobae";
+import scrapTwitter from "./sources/twitter";
+import dotenv from "dotenv";
 
-scrapInfobae()
+dotenv.config();
+
+// scrapInfobae()
+scrapTwitter()
+

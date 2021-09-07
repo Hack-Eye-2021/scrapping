@@ -1,15 +1,15 @@
 import {promises as fs} from 'fs'
 import {S3} from 'aws-sdk'
 import moment from 'moment'
+import {DataElement} from "../models/models";
 
 const Bucket = 'hawk-eye-sources'
 
 const config = {
     target: 'DISK'
 }
-
-const persist = async (source, obj: object) => {
-    return persistors[config.target](source, JSON.stringify(obj));
+const persist = async (source, data: DataElement[]) => {
+    return persistors[config.target](source, JSON.stringify(data));
 }
 
 const persistDisk = async (source, json) => {
