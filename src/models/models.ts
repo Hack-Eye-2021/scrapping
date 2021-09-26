@@ -5,3 +5,9 @@ export type DataElement = {
         content: string[]
     }
 }
+
+export type Html = string
+
+export type Url = {
+    value: string
+}

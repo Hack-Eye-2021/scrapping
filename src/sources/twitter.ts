@@ -51,9 +51,9 @@ const fetchTrendingTopicsTweets = async (trendingTopic: TwitterTrends): Promise<
 }
 
 const fetchTrendingTopics = async (): Promise<TwitterTrends[]> => {
-    const fetchTrendingTopics = await twitterFetch("https://api.twitter.com/1.1/trends/place.json?id=1")
+    const trendingTopics = await twitterFetch("https://api.twitter.com/1.1/trends/place.json?id=1")
 
-    return fetchTrendingTopics[0].trends;
+    return trendingTopics[0].trends;
 }
 
 

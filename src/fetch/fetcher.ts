@@ -1,16 +1,28 @@
 import fetch from 'node-fetch'
-import puppeteer from 'puppeteer'
-const config = {
-    js: true
-}
-const fetchHTML = async (url: string, options: {host: string} = {host: ''}): Promise<string>  => {
+import puppeteer, {Browser} from 'puppeteer'
+import {Html} from "../models/models";
 
-    url = options.host + url
+const config = {
+    js: false
+}
+
+let savedBrowser
+const getBrowser: () => Promise<Browser> = async () => {
+    if (savedBrowser){
+        return savedBrowser
+    }else{
+        savedBrowser = await puppeteer.launch();
+        return savedBrowser
+    }
+}
+
+const fetchHTML = async (url: string): Promise<Html>  => {
+
     console.log(`fetching ${url}`)
     if (config.js){
         return fetchHTMLWithJS(url)
     }else {
-        return fetchHTMLWithJS(url)
+        return fetchHTMLWithoutJS(url)
     }
 
 }
@@ -22,12 +34,10 @@ const fetchHTMLWithoutJS = async (url: string): Promise<string>  => {
 }
 
 const fetchHTMLWithJS = async (url: string): Promise<string>  => {
-    const browser = await puppeteer.launch();
+    const browser = await getBrowser()
     const page = await browser.newPage();
     await page.goto(url);
-    const bodyHTML = await page.evaluate(() =>  document.documentElement.outerHTML);
-    await browser.close();
-    return bodyHTML
+    return await page.evaluate(() => document?.documentElement?.outerHTML)
 }
 
 export default fetchHTML
