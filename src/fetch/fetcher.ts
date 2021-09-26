@@ -2,10 +2,6 @@ import fetch from 'node-fetch'
 import puppeteer, {Browser} from 'puppeteer'
 import {Html} from "../models/models";
 
-const config = {
-    js: false
-}
-
 let savedBrowser
 const getBrowser: () => Promise<Browser> = async () => {
     if (savedBrowser){
@@ -16,7 +12,7 @@ const getBrowser: () => Promise<Browser> = async () => {
     }
 }
 
-const fetchHTML = async (url: string): Promise<Html>  => {
+const fetchHTML = async (url: string, config = { js: false}): Promise<Html>  => {
 
     console.log(`fetching ${url}`)
     if (config.js){
