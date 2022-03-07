@@ -1,11 +1,44 @@
-import scrapInfobae from "./sources/infobae";
-import scrapTwitter from "./sources/twitter";
+import Infobae from "./sources/infobae";
 import dotenv from "dotenv";
 
 dotenv.config();
 
-// scrapInfobae()
-scrapTwitter()
+import express from 'express';
+import cors from 'cors';
 
-// tslint:disable-next-line:no-empty no-bitwise
-setInterval(() => {}, 1 << 30);
+import bodyParser from "body-parser";
+import * as url from "url";
+
+const app = express();
+
+const port = process.env.PORT || 3000;
+
+app.listen(port, () => {
+    console.log(`Timezones by location application is running on port ${port}.`);
+});
+
+app.use(cors())
+app.use(bodyParser.json())
+
+const sources = {
+    infobae: new Infobae()
+}
+
+app.get('/sources/:source/contents', (req, res) => {
+    const source = req.params.source
+    sources[source]
+        .getContents()
+        .then(urls => res.send(urls))
+})
+
+app.get('/sources/:source/contents/:URL', (req, res) => {
+    const source = req.params.source
+    const URL = req.params.URL
+    sources[source]
+        .getContent(URL)
+        .then(urls => res.send(urls))
+})
+
+
+
+
