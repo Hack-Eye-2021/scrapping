@@ -4,7 +4,7 @@
   "description": "### Sources",
   "main": "dist/app.js",
   "scripts": {
-    "start": "tsc && ts-node dist/app.js"
+    "start": "ts-node dist/app.js"
   },
   "repository": {
     "type": "git",
