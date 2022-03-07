@@ -1,10 +1,10 @@
 {
   "name": "hack-eye-scrapping",
   "version": "1.0.0",
-  "description": "### Sources",
+  "description": "Scrapper",
   "main": "dist/app.js",
   "scripts": {
-    "start": "ts-node dist/app.js"
+    "start": "ts-node src/app.ts"
   },
   "repository": {
     "type": "git",
