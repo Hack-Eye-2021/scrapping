@@ -4,7 +4,7 @@ import {PromiseAll} from "../utils/batch";
 import Source from "./sources";
 import {TwitterStatus, TwitterTrends} from "../models/twitter";
 
-const MAX_TWEETS_PER_TT = 20;
+const MAX_TWEETS_PER_TT = 5;
 const BATCH_SIZE = 5
 
 const twitterFetch = (url: string) => {
