@@ -1,8 +1,8 @@
 export type DataElement = {
     url: string,
-    data: {
+    data?: {
         title: string,
-        content: string[]
+        content: string
     }
 }
 

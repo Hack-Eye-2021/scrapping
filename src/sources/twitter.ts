@@ -1,9 +1,10 @@
 import fetch from "node-fetch";
 import {DataElement} from "../models/models";
-import persist from "../persist/persistor";
 import {PromiseAll} from "../utils/batch";
+import Source from "./sources";
+import {TwitterStatus, TwitterTrends} from "../models/twitter";
 
-const MAX_TWEETS_PER_TT = 10;
+const MAX_TWEETS_PER_TT = 20;
 const BATCH_SIZE = 5
 
 const twitterFetch = (url: string) => {
@@ -12,7 +13,7 @@ const twitterFetch = (url: string) => {
         {
             method: 'GET',
             headers: {
-                'Authorization': 'Bearer ' + process.env.TWITTER_BEARER,
+                'Authorization': 'Bearer AAAAAAAAAAAAAAAAAAAAACbKTQEAAAAALN7G7nDUpfBOHf%2BTElkU7rf%2Bqyk%3Dcm1yWZ8omgcuodWRMPxPoglJU8cg6XjIJTJ5kawLTyqneZ3r7j',
 
             }
         })
@@ -20,11 +21,14 @@ const twitterFetch = (url: string) => {
 }
 
 const parseStatus = (title: string, status: TwitterStatus): DataElement => {
+    const content = status.full_text
+        .replace(/\n/g, "")
+        .replace(/http[^\s]*/g, "")
     return {
         url: `https://twitter.com/i/web/status/${status.id}`,
         data: {
             title,
-            content: [status.full_text]
+            content
         }
     }
 };
@@ -38,7 +42,8 @@ const fetchTrendingTopicsTweets = async (trendingTopic: TwitterTrends): Promise<
             result_type: "popular",
             count: MAX_TWEETS_PER_TT.toString(),
             include_entities: "false",
-            tweet_mode: "extended"
+            tweet_mode: "extended",
+            lang: "es"
         }
     );
 
@@ -53,24 +58,21 @@ const fetchTrendingTopicsTweets = async (trendingTopic: TwitterTrends): Promise<
         })
 }
 
+// 23424747 = Argentina code
 const fetchTrendingTopics = async (): Promise<TwitterTrends[]> => {
-    const trendingTopics = await twitterFetch("https://api.twitter.com/1.1/trends/place.json?id=1")
+    const trendingTopics = await twitterFetch("https://api.twitter.com/1.1/trends/place.json?id=23424747")
 
     return trendingTopics[0].trends;
 }
 
+export default class Twitter implements Source {
 
-const scrapTwitter = async () => {
-    console.log('scrapping twitter')
-    const start = new Date().getTime()
-    const trendingTopics: TwitterTrends[] = await fetchTrendingTopics();
+    async getContents(){
+        const trendingTopics: TwitterTrends[] = await fetchTrendingTopics();
+        return (await PromiseAll(trendingTopics, fetchTrendingTopicsTweets, BATCH_SIZE)).flat()
+    }
 
-    const tweets = (await PromiseAll(trendingTopics, fetchTrendingTopicsTweets, BATCH_SIZE)).flat()
-
-    await persist("TWITTER", tweets)
-    console.log('scrapped twitter in: ' + (new Date().getTime() - start) + ' millis.')
-
+    async getContent() {
+        return Promise.reject(new Error("Method not implemented"))
+    }
 }
-
-
-export default scrapTwitter

@@ -1,10 +1,10 @@
-interface TwitterTrends {
+export interface TwitterTrends {
     name: string,
     url: string,
     query: string,
 }
 
-interface TwitterStatus {
+export interface TwitterStatus {
     id: number,
     full_text: string,
 }

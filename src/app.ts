@@ -1,4 +1,5 @@
 import Infobae from "./sources/infobae";
+import Twitter from "./sources/twitter";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -21,7 +22,8 @@ app.use(cors())
 app.use(bodyParser.json())
 
 const sources = {
-    infobae: new Infobae()
+    infobae: new Infobae(),
+    twitter: new Twitter()
 }
 
 app.get('/sources/:source/contents', (req, res) => {
