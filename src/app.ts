@@ -31,6 +31,7 @@ app.get('/sources/:source/contents', (req, res) => {
     sources[source]
         .getContents()
         .then(urls => res.send(urls))
+        .catch(e => res.status(500).send(e.message))
 })
 
 app.get('/sources/:source/contents/:URL', (req, res) => {
@@ -39,6 +40,7 @@ app.get('/sources/:source/contents/:URL', (req, res) => {
     sources[source]
         .getContent(URL)
         .then(urls => res.send(urls))
+        .catch(e => res.status(500).send(e.message))
 })
 
 
