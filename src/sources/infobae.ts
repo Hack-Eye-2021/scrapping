@@ -27,7 +27,7 @@ export default class Infobae implements Source {
     async getContents(){
         const landingPage: Html = await fetchHTML(BASE_URL)
         const {relativeURLs} = parse(LANDING_PAGE_SCHEMA, landingPage)
-        return relativeURLs.map(u => BASE_URL + u.value)
+        return relativeURLs.map(u => ({url: `${BASE_URL}${u.value}`}))
     }
 
     async getContent(url) {
