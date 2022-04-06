@@ -6,5 +6,6 @@ export interface TwitterTrends {
 
 export interface TwitterStatus {
     id: number,
+    id_str: string,
     full_text: string,
 }

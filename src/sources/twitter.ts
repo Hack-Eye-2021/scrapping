@@ -25,7 +25,7 @@ const parseStatus = (title: string, status: TwitterStatus): DataElement => {
         .replace(/\n/g, "")
         .replace(/http[^\s]*/g, "")
     return {
-        url: `https://twitter.com/i/web/status/${status.id}`,
+        url: `https://twitter.com/i/web/status/${status.id_str}`,
         data: {
             title,
             content
